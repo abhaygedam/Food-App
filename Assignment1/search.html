@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body>
+    <div id="nav"></div>
+    <div>
+      <input type="text" placeholder="Enter reciepe name" id="query" />
+      <button id="butt">Search</button>
+      <div id="sugg"></div>
+      <div id="data"></div>
+    </div>
+  </body>
+</html>
+
+<script type="module">
+  import myNavbar from "./components/navbar.js";
+  import { getData, appendData } from "./scripts/showData.js";
+
+  document.getElementById("nav").innerHTML = myNavbar();
+  let div_Sug = document.getElementById("sugg");
+
+  async function results() {
+    let query = document.getElementById("query").value;
+    console.log(query);
+
+    let response = getData(
+      `https://themealdb.com/api/json/v1/1/search.php?s=${query}`
+    );
+
+    //console.log(response);
+
+    response.then((data) => {
+      let parent = document.getElementById("data");
+      appendData(data, parent);
+    });
+  }
+
+  async function suggestion() {
+    div_Sug.innerHTML = null;
+    document.getElementById("sugg").style.display = "block";
+    let query = document.getElementById("query").value;
+    console.log(query);
+    try {
+      let res = await fetch(
+        `https://themealdb.com/api/json/v1/1/search.php?f=${query}`
+      );
+
+      let data = await res.json();
+      console.log(data);
+
+      data.meals.forEach((res) => {
+        let p = document.createElement("p");
+        console.log(res.strMeal);
+        p.innerText = res.strMeal;
+        p.setAttribute("class", "items");
+        p.addEventListener("click", function () {
+          let response = getData(
+            `https://themealdb.com/api/json/v1/1/search.php?s=${res.strMeal}`
+          );
+
+          response.then((data) => {
+            let parent = document.getElementById("data");
+            appendData(data, parent);
+            document.getElementById("sugg").style.display = "none";
+          });
+        });
+        div_Sug.append(p);
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  document.getElementById("butt").addEventListener("click", results);
+  document.getElementById("query").addEventListener("input", suggestion);
+</script>

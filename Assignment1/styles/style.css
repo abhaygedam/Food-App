@@ -1,0 +1,52 @@
+body {
+  background-color: ivory;
+}
+#navbar {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 4%;
+  padding-right: 4%;
+  border: solid 1px black;
+}
+#logo {
+  width: 160px;
+  height: 60px;
+  background-color: ivory;
+}
+.options {
+  display: flex;
+  justify-content: space-between;
+  list-style: none;
+}
+.options h3 {
+  padding-left: 30px;
+  padding-right: 10px;
+}
+input {
+  width: 30%;
+  height: 35px;
+  margin-left: 30%;
+  margin-top: 20px;
+  border-radius: 20px;
+}
+button {
+  width: 100px;
+  height: 35px;
+  border-radius: 10px;
+}
+#sugg {
+  height: 200px;
+  width: 30%;
+  margin-left: 30%;
+  border: 1px solid black;
+  border-radius: 10px;
+  border-top: none;
+  overflow: scroll;
+  display: none;
+}
+
+.items:hover {
+  margin: 0;
+  background-color: rgb(204, 203, 203);
+  cursor: pointer;
+}
